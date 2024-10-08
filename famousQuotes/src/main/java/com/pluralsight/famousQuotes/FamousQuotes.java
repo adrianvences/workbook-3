@@ -1,5 +1,6 @@
 package com.pluralsight.famousQuotes;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class FamousQuotes {
@@ -17,23 +18,67 @@ public class FamousQuotes {
             "Success is not final, failure is not fatal: It is the courage to continue that counts. – Winston S. Churchill"
     };
 
-    public static void main(String[] args) {
+    public static void famousQuotePicker(){
         Scanner userInput = new Scanner(System.in);
         System.out.print("Hello enter a number 1 - 10 (digits only): ");
         int usersNumber = userInput.nextInt();
-
         //this line creates an instance of the famousQuotes arr
         FamousQuotes quotesList = new FamousQuotes();
-
-        //input validation
-        if(usersNumber >= 1 && usersNumber <= 10) {
-            System.out.println("Here is your quotes.");
-            // prints out quote but subtracts number by one because index are 0 based
+        try {
             System.out.println(quotesList.famousQuotes[usersNumber-1]);
-        } else {
-            // invalid input
-            System.out.println("Invalid Number");
+        } catch (Exception e) {
+            System.out.println("invalid number");
         }
+    }
+
+    public static int randomGenerator(){
+        Random random = new Random();
+        return random.nextInt(10) + 1;
+    }
+
+    public static void main(String[] args) {
+        Scanner userInput = new Scanner(System.in);
+        famousQuotePicker();
+        while(true) {
+            System.out.println("Enter \n 'a' to enter another 1-10 number for a quote. \n 'b' for a random quote. \n 'x' to exit\n");
+            String menuInput = userInput.nextLine();
+            switch (menuInput.toLowerCase()) {
+                case "a":
+                    famousQuotePicker();
+                    break;
+
+                case "b":
+                    //this line creates an instance of the famousQuotes arr
+                    FamousQuotes quotesList = new FamousQuotes();
+                    System.out.println(quotesList.famousQuotes[randomGenerator()]);
+
+
+                case "x":
+                    break;
+
+            }
+
+            // if statement to turn while loop from true to false
+            System.out.print("Do you want to continue? (yes/no):");
+            String continueInput = userInput.nextLine();
+            if (continueInput.equalsIgnoreCase("no")) {
+                System.out.println("Goodbye!");
+                break;
+            }
+        }
+
+
+
+
+//        //input validation
+//        if(usersNumber >= 1 && usersNumber <= 10) {
+//            System.out.println("Here is your quotes.");
+//            // prints out quote but subtracts number by one because index are 0 based
+//            System.out.println(quotesList.famousQuotes[usersNumber-1]);
+//        } else {
+//            // invalid input
+//            System.out.println("Invalid Number");
+//        }
 
     }
 }

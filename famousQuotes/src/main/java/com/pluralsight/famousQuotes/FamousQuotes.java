@@ -19,12 +19,12 @@ public class FamousQuotes {
     };
 
     public static void famousQuotePicker(){
-        Scanner userInput = new Scanner(System.in);
-        System.out.print("Hello enter a number 1 - 10 (digits only): ");
-        int usersNumber = userInput.nextInt();
-        //this line creates an instance of the famousQuotes arr
-        FamousQuotes quotesList = new FamousQuotes();
         try {
+            Scanner userInput = new Scanner(System.in);
+            System.out.print("Hello enter a number 1 - 10 (digits only): ");
+            int usersNumber = userInput.nextInt();
+            //this line creates an instance of the famousQuotes arr
+            FamousQuotes quotesList = new FamousQuotes();
             System.out.println(quotesList.famousQuotes[usersNumber-1]);
         } catch (Exception e) {
             System.out.println("invalid number");

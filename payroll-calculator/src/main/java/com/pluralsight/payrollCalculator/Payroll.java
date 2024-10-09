@@ -1,30 +1,5 @@
 package com.pluralsight.payrollCalculator;
 
-
-// import java.io.*;
-//public class Program
-//{
-//  public static void main(String args[])
-//  {
-//      try
-//      {
-////        create a FileReader object connected to the File
-//          FileReader fileReader = new FileReader("poem.txt");
-////        create a BufferedReader to manage input stream
-//          BufferedReader bufReader = new BufferedReader(fileReader);
-//          String input;
-////        read until there is no more data
-//          while((input = bufReader.readLine()) != null) {
-//          System.out.println(input);
-//          }
-////        close the stream and release the resources
-//          bufReader.close();
-//}
-//  catch(IOException e) {
-////    display stack trace if there was an error
-//         e.printStackTrace();
-
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,20 +20,20 @@ public class Payroll {
 
         try {
             // created a FileReader to read file
-            FileReader fileReader = new FileReader("./src/main/resources/employees.csv");
+            FileReader fileReader = new FileReader("./src/main/resources/" + fileToRead);
             // created buffer reader to read text from stream fileReader
             BufferedReader buffReader = new BufferedReader(fileReader);
-            // Skip the header line
-//            buffReader.readLine();
 
             // create a FileWriter
             FileWriter fileWriter = new FileWriter(fileToCreate);
+
             // create a buffered writer
             BufferedWriter bufWriter = new BufferedWriter(fileWriter);
+
             // header line
             String header = buffReader.readLine();
-            String[] headerParts = header.split("\\| \n");
-            bufWriter.write(String.format(" %s | %s | %s", headerParts[0],headerParts[1],headerParts[2]));
+            String[] headerParts = header.split("\\|");
+            bufWriter.write(String.format(" %s | %s | gross pay \n", headerParts[0],headerParts[1]));
 //            bufWriter.write(" id | name | gross pay\n");
 
             // input to assign each line from while loop

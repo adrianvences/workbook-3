@@ -26,6 +26,12 @@ public class OnlineStore {
                 - 'b' to Display Cart
                 - 'x' to Exit
                 """;
+        String displayCartPrompt = """
+                ~ Enter one of the options below to Navigate Menu~
+                - 'a' to Check Out
+                - 'b' to remove Product from car
+                - 'x' to go back to home screen
+                """;
 
 
 
@@ -61,9 +67,37 @@ public class OnlineStore {
 
                 break;
                 case "b":
-//                    System.out.println("Display Cart");
                     displayCart();
-                    break;
+                    String displayCartInput;
+                    while(true){
+                        displayCartInput = promptMaker(displayCartPrompt);
+                        if(displayCartInput.equalsIgnoreCase("a")) {
+                            System.out.println("check out method");
+                            break;
+                        }
+                        else if(displayCartInput.equalsIgnoreCase("b")) {
+                            String removeProductInput = promptMaker("Enter product name to remove from cart. ('x' to go back to home)");
+                            Product foundProduct = searchProductByName(cart, removeProductInput);
+                            if (foundProduct != null) {
+                                removeFromCart(cart, foundProduct);
+                                displayCart();
+
+                            } else {
+                                System.out.println("Product not found.");
+                            }
+                        }
+                        else if(displayCartInput.equalsIgnoreCase("x")) {
+                            System.out.println("returning to home screen");
+                            break;
+                        } else {
+                                System.out.println("invalid input");
+                                break;
+                        }
+
+                    } break;
+
+
+
                 case "x":
                     System.out.println("Good Bye!");
                     return;
@@ -157,7 +191,8 @@ public class OnlineStore {
     }
 
     public static void removeFromCart(ArrayList<Product> cart, Product product) {
-
+        cart.remove(product);
+        System.out.println("x1: " + product.getProductName() + " has been removed from your cart.");
     }
 }
 

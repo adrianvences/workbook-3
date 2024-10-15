@@ -3,12 +3,16 @@ package com.pluralsight.onlineStore;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.lang.reflect.Array;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class OnlineStore {
     static Scanner inputScanner = new Scanner(System.in);
     static ArrayList<Product> cart = new ArrayList<>();
+    static double cartTotal = cartTotalCalculator(cart);
+
 
     public static void main(String[] args) {
         storeHomeScreen();
@@ -29,7 +33,7 @@ public class OnlineStore {
         String displayCartPrompt = """
                 ~ Enter one of the options below to Navigate Menu~
                 - 'a' to Check Out
-                - 'b' to remove Product from car
+                - 'b' to remove Product from cart
                 - 'x' to go back to home screen
                 """;
 
@@ -71,8 +75,23 @@ public class OnlineStore {
                     String displayCartInput;
                     while(true){
                         displayCartInput = promptMaker(displayCartPrompt);
-                        if(displayCartInput.equalsIgnoreCase("a")) {
-                            System.out.println("check out method");
+                        boolean isCartEmpty = cart.isEmpty();
+                        if(displayCartInput.equalsIgnoreCase("a") && !cart.isEmpty()) {
+
+                            System.out.printf("Your total is: $%.2f \n", cartTotalCalculator(cart) );
+                            System.out.print("Enter amount of money that you are handing in: $");
+                            double payment = inputScanner.nextDouble();
+                            inputScanner.nextLine();
+                            if (payment >= cartTotalCalculator(cart)) {
+                                checkOutCart(payment);
+
+                            } else {
+                                System.out.println("Insufficient amount");
+                            }
+                            break;
+                        }
+                        if(displayCartInput.equalsIgnoreCase("a") && isCartEmpty){
+                            System.out.println("Your cart is empty cannot check out.");
                             break;
                         }
                         else if(displayCartInput.equalsIgnoreCase("b")) {
@@ -90,11 +109,12 @@ public class OnlineStore {
                             System.out.println("returning to home screen");
                             break;
                         } else {
-                                System.out.println("invalid input");
-                                break;
+                                System.out.println("invalid input1");
+//                                break;
                         }
 
-                    } break;
+                    }
+                    break;
 
 
 
@@ -102,7 +122,7 @@ public class OnlineStore {
                     System.out.println("Good Bye!");
                     return;
                 default:
-                    System.out.println("Invalid Input, Try Again.");
+                    System.out.println("Invalid Input, Try Again.2");
                     break;
 
             }
@@ -193,6 +213,31 @@ public class OnlineStore {
     public static void removeFromCart(ArrayList<Product> cart, Product product) {
         cart.remove(product);
         System.out.println("x1: " + product.getProductName() + " has been removed from your cart.");
+    }
+
+    public static void checkOutCart(double money) {
+        LocalDateTime today = LocalDateTime.now();
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+        String formattedDate = today.format(dateFormat);
+        System.out.printf("Thank you for visiting the online store.\n",money-cartTotalCalculator(cart));
+        System.out.println("            *************");
+        System.out.println("          The Online Store");
+        System.out.println("       " +today.getHour() + ":" + today.getMinute() + " on " + formattedDate );
+        System.out.println("             *Receipt*");
+        for(Product product : cart) {
+            System.out.printf("Item : %s     Price: $%.2f     QTY: 1 \n",product.getProductName(), product.getPrice());
+        }
+        System.out.printf("Amount Paid: $%.2f\n", money);
+        System.out.printf("Change Due: $%.2f ", (money - cartTotalCalculator(cart) ) );
+        System.out.println("Thank you come again!");
+        cart.clear();
+    }
+
+    public static double cartTotalCalculator(ArrayList<Product> cart){
+        double total = 0.0;
+        for(Product product : cart) {
+            total += product.getPrice();
+        } return total;
     }
 }
 

@@ -2,21 +2,24 @@ package com.pluralsight.onlineStore;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class OnlineStore {
+
+
     static Scanner inputScanner = new Scanner(System.in);
+
+    // Shopping cart arraylist
     static ArrayList<Product> cart = new ArrayList<>();
-    static double cartTotal = cartTotalCalculator(cart);
+
 
 
     public static void main(String[] args) {
         storeHomeScreen();
-        ArrayList<Product> products = productListMethod();
+//        ArrayList<Product> products = productListMethod();
 
     }
 
@@ -38,17 +41,19 @@ public class OnlineStore {
                 """;
 
 
-
+        // Main menu
         while(true) {
             System.out.println("              *Online Store Menu*");
             String userInput = promptMaker(homeScreenPrompt);
             switch (userInput.toLowerCase()) {
+
+                //Display products list
                 case "a":
                     ArrayList<Product> products = productListMethod();
                     printArrayMethods(products);
                     String input ;
                     while(true) {
-                        input = promptMaker("Search for item or Enter 'x' to return to main screen.");
+                        input = promptMaker("Search for item by name or Enter 'x' to return to main screen.");
                         if (input.equalsIgnoreCase("x")) {
                             break;
                         }
@@ -70,6 +75,8 @@ public class OnlineStore {
 
 
                 break;
+
+                    //Display cart
                 case "b":
                     displayCart();
                     String displayCartInput;
@@ -90,10 +97,14 @@ public class OnlineStore {
                             }
                             break;
                         }
+
+                        // checks if cart is empty and will not allow check out
                         if(displayCartInput.equalsIgnoreCase("a") && isCartEmpty){
                             System.out.println("Your cart is empty cannot check out.");
                             break;
                         }
+
+                        // remove items from cart menu option
                         else if(displayCartInput.equalsIgnoreCase("b")) {
                             String removeProductInput = promptMaker("Enter product name to remove from cart. ('x' to go back to home)");
                             Product foundProduct = searchProductByName(cart, removeProductInput);
@@ -105,6 +116,8 @@ public class OnlineStore {
                                 System.out.println("Product not found.");
                             }
                         }
+
+                        // return to home screen option
                         else if(displayCartInput.equalsIgnoreCase("x")) {
                             System.out.println("returning to home screen");
                             break;
@@ -116,11 +129,12 @@ public class OnlineStore {
                     }
                     break;
 
-
-
+                    // exit
                 case "x":
                     System.out.println("Good Bye!");
                     return;
+
+                    // default case in case user inputs invalid input
                 default:
                     System.out.println("Invalid Input, Try Again.2");
                     break;
@@ -129,11 +143,13 @@ public class OnlineStore {
         }
     }
 
+    // prompt maker for Input scanner strings
     public static String promptMaker(String prompt){
         System.out.println(prompt);
         return inputScanner.nextLine();
     }
 
+    // reads csv file and populates product arraylist
     public static ArrayList<Product> productListMethod() {
 
         ArrayList<Product> productList = new ArrayList<>();
@@ -171,7 +187,7 @@ public class OnlineStore {
     }
 
 
-
+    // Prints array method
     public static void printArrayMethods(ArrayList<Product> array) {
 
         for(Product product : array) {
@@ -180,6 +196,7 @@ public class OnlineStore {
 
     }
 
+    // Search Product by name method
     public static Product searchProductByName(ArrayList<Product> productList, String productName) {
         for(Product product : productList){
             if(product.getProductName().equalsIgnoreCase(productName)) {
@@ -190,7 +207,11 @@ public class OnlineStore {
 
         return null;
     }
+
+
     // USERS CART METHODS
+
+    // Displays cart method
     public static void displayCart() {
         if(cart.isEmpty()) {
             System.out.println("Your cart is empty.");
@@ -205,16 +226,19 @@ public class OnlineStore {
         }
     }
 
+    // Add to cart method
     public static void addToCart(ArrayList<Product> cart, Product product) {
         cart.add(product);
         System.out.println(product.getProductName() + " has been added to your cart.");
     }
 
+    // remove from cart method
     public static void removeFromCart(ArrayList<Product> cart, Product product) {
         cart.remove(product);
         System.out.println("x1: " + product.getProductName() + " has been removed from your cart.");
     }
 
+    // check out method and receipt method
     public static void checkOutCart(double money) {
         LocalDateTime today = LocalDateTime.now();
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
@@ -233,6 +257,8 @@ public class OnlineStore {
         cart.clear();
     }
 
+
+    // adds all the product prices together
     public static double cartTotalCalculator(ArrayList<Product> cart){
         double total = 0.0;
         for(Product product : cart) {
